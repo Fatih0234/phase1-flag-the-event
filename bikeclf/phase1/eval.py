@@ -165,10 +165,13 @@ def evaluate(
     run_dir = create_run_directory(prompt)
     console.print(f"[blue]Run directory: {run_dir}[/blue]\n")
 
-    # Initialize Langfuse trace
-    trace = None
-    if langfuse:
-        trace = langfuse.trace(
+    # Process each row
+    predictions: List[PredictionRecord] = []
+    errors_path = run_dir / "errors.jsonl"
+
+    # Use Langfuse span for the entire evaluation if configured
+    span_context = (
+        langfuse.start_as_current_span(
             name=f"eval_{prompt}",
             metadata={
                 "prompt_version": prompt,
@@ -177,84 +180,121 @@ def evaluate(
                 "temperature": temperature,
             },
         )
+        if langfuse
+        else None
+    )
 
-    # Process each row
-    predictions: List[PredictionRecord] = []
-    errors_path = run_dir / "errors.jsonl"
+    try:
+        if span_context:
+            span_context.__enter__()
 
-    with console.status("[bold green]Processing reports...") as status:
-        for idx, row in df.iterrows():
-            status.update(f"Processing {row['id']} ({idx + 1}/{len(df)})")
+        with console.status("[bold green]Processing reports...") as status:
+            for idx, row in df.iterrows():
+                status.update(f"Processing {row['id']} ({idx + 1}/{len(df)})")
 
-            # Format prompt with report details
-            full_prompt = format_prompt(
-                system_prompt,
-                row["subject"],
-                row["description"],
-            )
-
-            # Classify with retry logic
-            output, latency_ms, attempts, error = client.classify_with_retry(
-                prompt=full_prompt,
-                model_id=model,
-                temperature=temperature,
-                max_tokens=max_tokens,
-            )
-
-            timestamp_utc = datetime.now(timezone.utc).isoformat()
-
-            # Handle failure
-            if output is None:
-                error_record = {
-                    "id": row["id"],
-                    "subject": row["subject"],
-                    "description": row["description"],
-                    "gold_label": row["gold_label"],
-                    "error": error,
-                    "attempts": attempts,
-                    "timestamp_utc": timestamp_utc,
-                }
-                append_error_jsonl(error_record, errors_path)
-                console.print(f"[red]✗ Failed: {row['id']} - {error}[/red]")
-                continue
-
-            # Create prediction record
-            meta = PredictionMeta(
-                model_id=model,
-                prompt_version=prompt,
-                temperature=temperature,
-                max_output_tokens=max_tokens,
-                timestamp_utc=timestamp_utc,
-                latency_ms=latency_ms,
-                attempts=attempts,
-            )
-
-            record = PredictionRecord(
-                id=row["id"],
-                subject=row["subject"],
-                description=row["description"],
-                gold_label=row["gold_label"],
-                pred=output,
-                meta=meta,
-            )
-
-            predictions.append(record)
-
-            # Langfuse trace for this classification
-            if trace:
-                trace.generation(
-                    name=f"classify_{row['id']}",
-                    model=model,
-                    input=full_prompt,
-                    output=output.model_dump(),
-                    metadata={
-                        "gold_label": row["gold_label"],
-                        "pred_label": output.label,
-                        "latency_ms": latency_ms,
-                        "attempts": attempts,
-                        "row_id": row["id"],
-                    },
+                # Format prompt with report details
+                full_prompt = format_prompt(
+                    system_prompt,
+                    row["subject"],
+                    row["description"],
                 )
+
+                # Create a nested generation span for this classification
+                generation_context = (
+                    langfuse.start_as_current_generation(
+                        name=f"classify_{row['id']}",
+                        model=model,
+                        input=full_prompt,
+                        metadata={
+                            "row_id": row["id"],
+                            "gold_label": row["gold_label"],
+                        },
+                    )
+                    if langfuse
+                    else None
+                )
+
+                try:
+                    if generation_context:
+                        generation_context.__enter__()
+
+                    # Classify with retry logic
+                    output, latency_ms, attempts, error = client.classify_with_retry(
+                        prompt=full_prompt,
+                        model_id=model,
+                        temperature=temperature,
+                        max_tokens=max_tokens,
+                    )
+
+                    timestamp_utc = datetime.now(timezone.utc).isoformat()
+
+                    # Handle failure
+                    if output is None:
+                        error_record = {
+                            "id": row["id"],
+                            "subject": row["subject"],
+                            "description": row["description"],
+                            "gold_label": row["gold_label"],
+                            "error": error,
+                            "attempts": attempts,
+                            "timestamp_utc": timestamp_utc,
+                        }
+                        append_error_jsonl(error_record, errors_path)
+                        console.print(f"[red]✗ Failed: {row['id']} - {error}[/red]")
+
+                        # Update generation with error
+                        if generation_context:
+                            langfuse.update_current_generation(
+                                output={"error": error},
+                                metadata={
+                                    "latency_ms": latency_ms,
+                                    "attempts": attempts,
+                                    "status": "error",
+                                },
+                            )
+                        continue
+
+                    # Create prediction record
+                    meta = PredictionMeta(
+                        model_id=model,
+                        prompt_version=prompt,
+                        temperature=temperature,
+                        max_output_tokens=max_tokens,
+                        timestamp_utc=timestamp_utc,
+                        latency_ms=latency_ms,
+                        attempts=attempts,
+                    )
+
+                    record = PredictionRecord(
+                        id=row["id"],
+                        subject=row["subject"],
+                        description=row["description"],
+                        gold_label=row["gold_label"],
+                        pred=output,
+                        meta=meta,
+                    )
+
+                    predictions.append(record)
+
+                    # Update Langfuse generation with output
+                    if generation_context:
+                        langfuse.update_current_generation(
+                            output=output.model_dump(),
+                            metadata={
+                                "pred_label": output.label,
+                                "latency_ms": latency_ms,
+                                "attempts": attempts,
+                                "confidence": output.confidence,
+                            },
+                        )
+
+                finally:
+                    if generation_context:
+                        generation_context.__exit__(None, None, None)
+
+    finally:
+        if span_context:
+            span_context.__exit__(None, None, None)
 
     # Save predictions
     predictions_path = run_dir / "predictions.jsonl"
