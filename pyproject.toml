@@ -15,6 +15,8 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "langfuse>=2.0.0",
     "rich>=13.0.0",
+    "streamlit>=1.30.0",
+    "plotly>=5.0.0",
 ]
 
 [project.optional-dependencies]
@@ -22,6 +24,9 @@ dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
 ]
+
+[project.scripts]
+bikeclf-dashboard = "bikeclf.phase1.dashboard:main"
 
 [build-system]
 requires = ["setuptools>=68.0", "wheel"]

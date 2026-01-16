@@ -11,6 +11,7 @@ Phase 1 implementation of a systematic prompt-iteration workflow for classifying
 - **Retry Logic**: Automatic retry with repair prompts on validation failures
 - **Rich CLI**: Beautiful command-line interface with tables and progress indicators
 - **Reproducible**: Tracks model version, prompt hash, git commit for full reproducibility
+- **Interactive Dashboard**: Streamlit app for error analysis, length-based slicing, and pattern discovery
 
 ## Quick Start
 
@@ -89,6 +90,30 @@ python -m bikeclf.phase1.eval diff \
   runs/20260116_120000_v001/predictions.jsonl \
   runs/20260116_130000_v002/predictions.jsonl
 ```
+
+### Launch Interactive Dashboard
+
+Analyze evaluation runs with a comprehensive Streamlit dashboard:
+
+```bash
+# Option 1: Using the launch script
+./run_dashboard.sh
+
+# Option 2: Direct streamlit command
+streamlit run bikeclf/phase1/dashboard.py
+```
+
+The dashboard automatically discovers all runs and provides:
+- **Run Selection**: Dropdown with all available runs and their metrics
+- **Overview Metrics**: Accuracy, F1, per-class performance
+- **Confusion Matrix**: Interactive heatmap visualization
+- **Misclassification Analysis**: Filter, sort, and inspect errors in detail
+- **Length-Based Slicing**: Performance breakdown by text length buckets
+- **Confidence Distribution**: Compare confidence for correct vs incorrect predictions
+- **Error Patterns**: Most common misclassification types
+- **Detailed Case Inspection**: Dive deep into individual misclassifications with evidence and reasoning
+
+Access at: http://localhost:8501
 
 ## Project Structure
 
