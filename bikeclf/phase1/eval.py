@@ -24,6 +24,7 @@ from bikeclf.io import (
 )
 from bikeclf.gemini_client import GeminiClient
 from bikeclf.metrics import compute_metrics
+from bikeclf.markdown_report import generate_misclassification_report
 from bikeclf.phase1.prompt_loader import (
     load_prompt,
     list_available_prompts,
@@ -335,6 +336,18 @@ def evaluate(
             )
 
         console.print(table)
+
+        # Generate misclassification report
+        report_path = run_dir / "misclassifications.md"
+        num_misclassified = generate_misclassification_report(predictions, report_path)
+
+        if num_misclassified > 0:
+            console.print(
+                f"\n[cyan]📝 Generated misclassification report: {report_path.name} "
+                f"({num_misclassified} cases)[/cyan]"
+            )
+        else:
+            console.print("\n[green]📝 Generated report: Perfect accuracy![/green]")
     else:
         console.print("[yellow]⚠ No successful predictions to compute metrics[/yellow]")
 

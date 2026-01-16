@@ -161,10 +161,31 @@ python -m bikeclf.phase1.eval evaluate --prompt v001
 Check the output in `runs/<timestamp>_v001/`:
 - `metrics.json`: Overall performance
 - `predictions.jsonl`: Detailed predictions
+- `misclassifications.md`: **Human-readable report of all errors** ✨
 - `config.json`: Run configuration
 - `errors.jsonl`: Failures (if any)
 
 ### 2. Analyze Results
+
+**Option A: Read the Markdown Report** (Recommended)
+
+Open `runs/<timestamp>_v001/misclassifications.md` to see a formatted report with:
+- Summary of accuracy and error breakdown
+- All misclassified cases with:
+  - Subject and description
+  - Gold label vs predicted label
+  - Model's reasoning and evidence
+  - Confidence score and metadata
+
+**Option B: Use the Dashboard**
+
+```bash
+./run_dashboard.sh
+```
+
+Select your run from the dropdown and explore interactively.
+
+**Option C: Programmatic Analysis**
 
 ```python
 # Quick analysis script
@@ -212,6 +233,49 @@ git commit -m "Add v002: Improved decision criteria for 'uncertain' cases"
 ```
 
 ## Output Format
+
+### Misclassification Report (misclassifications.md)
+
+Human-readable markdown report automatically generated for each run:
+
+```markdown
+# Misclassification Report
+
+## Summary
+- Total predictions: 55
+- Correct predictions: 43
+- Misclassified: 12
+- Accuracy: 78.2%
+
+### Error Breakdown
+- false → true: 8 cases
+- false → uncertain: 2 cases
+- uncertain → true: 2 cases
+
+## Misclassified Cases
+
+### 1. Case E-01
+**Gold Label**: ❌ `false`
+**Predicted Label**: ✅ `true`
+**Confidence**: 1.00
+
+**Subject:**
+> Fahrrad am Rhein gefunden
+
+**Description:**
+> Heute am Rheinufer stand ein herrenloses Fahrrad...
+
+**Model's Reasoning:**
+> Die Meldung bezieht sich auf ein gefundenes Fahrrad...
+
+**Evidence Extracted:**
+> - Fahrrad am Rhein gefunden
+```
+
+**Generate for existing runs:**
+```bash
+python generate_report_for_run.py runs/20260116_135146_v001
+```
 
 ### Prediction Record (predictions.jsonl)
 
