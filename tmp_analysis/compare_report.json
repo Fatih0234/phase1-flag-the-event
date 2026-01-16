@@ -1,0 +1,871 @@
+{
+  "v001": {
+    "2.0": {
+      "run_dir": "/Volumes/T7/flag-the-event/runs/20260116_135146_v001_2.0-flash-001",
+      "metrics": {
+        "accuracy": 0.7818181818181819,
+        "macro_f1": 0.7777777777777778,
+        "per_class": {
+          "true": {
+            "precision": 0.6666666666666666,
+            "recall": 1.0,
+            "f1": 0.8,
+            "support": 20
+          },
+          "false": {
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1": 0.6666666666666666,
+            "support": 20
+          },
+          "uncertain": {
+            "precision": 0.8666666666666667,
+            "recall": 0.8666666666666667,
+            "f1": 0.8666666666666667,
+            "support": 15
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "true",
+            "false",
+            "uncertain"
+          ],
+          "matrix": [
+            [
+              20,
+              0,
+              0
+            ],
+            [
+              8,
+              10,
+              2
+            ],
+            [
+              2,
+              0,
+              13
+            ]
+          ]
+        }
+      },
+      "summary": {
+        "total": 55,
+        "accuracy": 0.7818181818181819,
+        "gold_dist": {
+          "true": 20,
+          "false": 20,
+          "uncertain": 15
+        },
+        "pred_dist": {
+          "true": 30,
+          "false": 10,
+          "uncertain": 15
+        }
+      },
+      "errors": [
+        {
+          "id": "B-02",
+          "subject": "Großbanner wirbt für Bordell",
+          "description": "An der Hauswand Ecke Lindenstraße/Marktplatz hängt ein riesiges Banner für ein Bordell. Das ist hier mitten im Wohngebiet und wirkt extrem unpassend. Bitte klären.",
+          "gold_label": "false",
+          "pred": {
+            "label": "uncertain",
+            "evidence": [
+              "An der Hauswand Ecke Lindenstraße/Marktplatz hängt ein riesiges Banner für ein Bordell."
+            ],
+            "reasoning": "Der Text beschreibt ein Problem (Bordellwerbung), enthält aber keine explizite Evidenz für eine Relevanz für Radfahrer oder Radwege.",
+            "confidence": 0.8
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v001",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T13:51:55.658509+00:00",
+            "latency_ms": 1214,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "B-05",
+          "subject": "Altglascontainer überfüllt",
+          "description": "Die Glascontainer an der Ecke Sonnenweg sind bis oben voll, daneben liegen Flaschen und Scherben. Bitte zeitnah leeren lassen. Das zieht auch Ratten an.",
+          "gold_label": "false",
+          "pred": {
+            "label": "uncertain",
+            "evidence": [
+              "Die Glascontainer an der Ecke Sonnenweg sind bis oben voll, daneben liegen Flaschen und Scherben."
+            ],
+            "reasoning": "Der Text beschreibt Scherben, aber ohne expliziten Bezug zu Radverkehr oder Radinfrastruktur.",
+            "confidence": 0.7
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v001",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T13:51:59.164644+00:00",
+            "latency_ms": 1171,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "C-02",
+          "subject": "Markierung an Kreuzung weg",
+          "description": "An der Ecke Florastraße / Mühlenweg sind die weißen Linien fast nicht mehr zu sehen. Man weiß nicht, wo man lang soll.",
+          "gold_label": "uncertain",
+          "pred": {
+            "label": "true",
+            "evidence": [
+              "Markierung an Kreuzung weg",
+              "weißen Linien fast nicht mehr zu sehen. Man weiß nicht, wo man lang soll."
+            ],
+            "reasoning": "Die Beschreibung der fehlenden Markierung an einer Kreuzung, wo man nicht mehr weiß, wo man lang soll, deutet auf eine Radfurt oder ähnliche Radverkehrsführung hin, was eine Radrelevanz indiziert.",
+            "confidence": 0.8
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v001",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T13:52:01.821481+00:00",
+            "latency_ms": 1472,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "C-08",
+          "subject": "Extrem glatt am Morgen",
+          "description": "Auf dem Stück am Uferweg ist es morgens spiegelglatt, wurde wohl nicht gestreut. Mehrere sind schon ausgerutscht.",
+          "gold_label": "uncertain",
+          "pred": {
+            "label": "true",
+            "evidence": [
+              "Uferweg"
+            ],
+            "reasoning": "Der Uferweg ist ein Weg, der häufig von Radfahrern genutzt wird, was auf eine Relevanz für den Radverkehr hindeutet.",
+            "confidence": 0.8
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v001",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T13:52:10.279313+00:00",
+            "latency_ms": 1124,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "E-01",
+          "subject": "Fahrrad am Rhein gefunden",
+          "description": "Heute am Rheinufer stand ein herrenloses Fahrrad mit kleinem Korb. Keine Gefahr oder Behinderung, wirkt nur vergessen.",
+          "gold_label": "false",
+          "pred": {
+            "label": "true",
+            "evidence": [
+              "Fahrrad am Rhein gefunden"
+            ],
+            "reasoning": "Die Meldung bezieht sich auf ein gefundenes Fahrrad, was es relevant für den Radverkehr macht.",
+            "confidence": 1.0
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v001",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T13:52:27.176989+00:00",
+            "latency_ms": 1034,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "E-04",
+          "subject": "Verlorener Fahrradschlüssel",
+          "description": "Habe meinen Fahrradschlüssel irgendwo am Neumarkt verloren. Falls der gefunden wird, bitte ans Fundbüro.",
+          "gold_label": "false",
+          "pred": {
+            "label": "true",
+            "evidence": [
+              "Fahrradschlüssel",
+              "Fahrrad"
+            ],
+            "reasoning": "Der Text erwähnt explizit einen verlorenen Fahrradschlüssel, was auf einen Bezug zum Fahrrad und damit zum Radverkehr hinweist.",
+            "confidence": 1.0
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v001",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T13:52:31.404980+00:00",
+            "latency_ms": 1256,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "E-06",
+          "subject": "Fahrrad im Park steht schon länger",
+          "description": "Im Stadtgarten steht seit Tagen ein Fahrrad am Baum angekettet. Es behindert niemanden, sieht nur ungepflegt aus.",
+          "gold_label": "false",
+          "pred": {
+            "label": "true",
+            "evidence": [
+              "Fahrrad im Park steht schon länger"
+            ],
+            "reasoning": "Das Vorhandensein eines Fahrrads im öffentlichen Raum (Park) deutet auf eine Relevanz für den Radverkehr hin.",
+            "confidence": 0.7
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v001",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T13:52:34.036022+00:00",
+            "latency_ms": 1283,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "E-07",
+          "subject": "Fahrradständer voll wegen Dauerparker",
+          "description": "Am Büro sind die Fahrradständer ständig voll, weil da immer dieselben Räder stehen. Ist das erlaubt?",
+          "gold_label": "false",
+          "pred": {
+            "label": "true",
+            "evidence": [
+              "Fahrradständer voll"
+            ],
+            "reasoning": "Die Meldung bezieht sich explizit auf Fahrradständer, was eine direkte Rad-Infrastruktur darstellt.",
+            "confidence": 1.0
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v001",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T13:52:35.060915+00:00",
+            "latency_ms": 1024,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "E-08",
+          "subject": "Fahrrad als Sperrmüll angekündigt",
+          "description": "Jemand hat ein altes Fahrrad mit Zettel „zu verschenken“ an die Hauswand gestellt. Steht ordentlich, nichts blockiert.",
+          "gold_label": "false",
+          "pred": {
+            "label": "true",
+            "evidence": [
+              "Fahrrad als Sperrmüll angekündigt",
+              "ein altes Fahrrad mit Zettel „zu verschenken“ an die Hauswand gestellt"
+            ],
+            "reasoning": "Das Vorhandensein eines Fahrrads im öffentlichen Raum, das zum Verschenken angeboten wird, impliziert eine Relevanz für den Radverkehr.",
+            "confidence": 0.7
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v001",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T13:52:36.498383+00:00",
+            "latency_ms": 1436,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "F-12",
+          "subject": "Altes Fahrrad am Baum, aber nicht im Weg",
+          "description": "An einem Baum steht ein altes Fahrrad ohne Sattel. Es steht am Rand und blockiert niemanden, wirkt nur verlassen.",
+          "gold_label": "false",
+          "pred": {
+            "label": "true",
+            "evidence": [
+              "Fahrrad"
+            ],
+            "reasoning": "Das Vorhandensein eines Fahrrads, auch wenn es verlassen ist, deutet auf eine Relevanz für den Radverkehr hin.",
+            "confidence": 0.7
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v001",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T13:52:54.009483+00:00",
+            "latency_ms": 1129,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "F-13",
+          "subject": "Verdacht auf Fahrraddiebstahl",
+          "description": "Seit gestern schraubt jemand abends an mehreren Fahrrädern am Innenhof herum. Bitte Polizei informieren oder prüfen lassen.",
+          "gold_label": "false",
+          "pred": {
+            "label": "true",
+            "evidence": [
+              "Fahrraddiebstahl",
+              "an mehreren Fahrrädern"
+            ],
+            "reasoning": "Der Text erwähnt Fahrraddiebstahl und mehrere Fahrräder, was eine klare Verbindung zum Thema Fahrrad impliziert.",
+            "confidence": 1.0
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v001",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T13:52:55.131876+00:00",
+            "latency_ms": 1121,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "F-15",
+          "subject": "Schlüssel für Fahrradschloss verloren",
+          "description": "Ich habe den Schlüssel für mein Fahrradschloss verloren und das Fahrrad steht nun fest. Bitte Hinweise zum Fundbüro.",
+          "gold_label": "false",
+          "pred": {
+            "label": "true",
+            "evidence": [
+              "Schlüssel für Fahrradschloss verloren",
+              "Fahrrad steht nun fest"
+            ],
+            "reasoning": "Der Verlust eines Fahrradschlüssels, der dazu führt, dass ein Fahrrad nicht bewegt werden kann, impliziert eine direkte Relevanz für Fahrräder.",
+            "confidence": 1.0
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v001",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T13:52:57.761036+00:00",
+            "latency_ms": 1394,
+            "attempts": 1
+          }
+        }
+      ]
+    },
+    "2.5": {
+      "run_dir": "/Volumes/T7/flag-the-event/runs/20260116_143925_v001_2.5-lite",
+      "metrics": {
+        "accuracy": 0.9818181818181818,
+        "macro_f1": 0.9833229101521784,
+        "per_class": {
+          "true": {
+            "precision": 0.9523809523809523,
+            "recall": 1.0,
+            "f1": 0.975609756097561,
+            "support": 20
+          },
+          "false": {
+            "precision": 1.0,
+            "recall": 0.95,
+            "f1": 0.9743589743589743,
+            "support": 20
+          },
+          "uncertain": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 15
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "true",
+            "false",
+            "uncertain"
+          ],
+          "matrix": [
+            [
+              20,
+              0,
+              0
+            ],
+            [
+              1,
+              19,
+              0
+            ],
+            [
+              0,
+              0,
+              15
+            ]
+          ]
+        }
+      },
+      "summary": {
+        "total": 55,
+        "accuracy": 0.9818181818181818,
+        "gold_dist": {
+          "true": 20,
+          "false": 20,
+          "uncertain": 15
+        },
+        "pred_dist": {
+          "true": 21,
+          "false": 19,
+          "uncertain": 15
+        }
+      },
+      "errors": [
+        {
+          "id": "E-07",
+          "subject": "Fahrradständer voll wegen Dauerparker",
+          "description": "Am Büro sind die Fahrradständer ständig voll, weil da immer dieselben Räder stehen. Ist das erlaubt?",
+          "gold_label": "false",
+          "pred": {
+            "label": "true",
+            "evidence": [
+              "Fahrradständer"
+            ],
+            "reasoning": "Der Text erwähnt explizit 'Fahrradständer', was eine direkte Rad-Infrastruktur darstellt.",
+            "confidence": 1.0
+          },
+          "meta": {
+            "model_id": "gemini-2.5-flash-lite",
+            "prompt_version": "v001",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T14:39:53.203828+00:00",
+            "latency_ms": 640,
+            "attempts": 1
+          }
+        }
+      ]
+    }
+  },
+  "v002": {
+    "2.0": {
+      "run_dir": "/Volumes/T7/flag-the-event/runs/20260116_153132_v002_2.0-flash-001",
+      "metrics": {
+        "accuracy": 0.9090909090909091,
+        "macro_f1": 0.9033365162397421,
+        "per_class": {
+          "true": {
+            "precision": 0.9090909090909091,
+            "recall": 1.0,
+            "f1": 0.9523809523809523,
+            "support": 20
+          },
+          "false": {
+            "precision": 1.0,
+            "recall": 0.85,
+            "f1": 0.918918918918919,
+            "support": 20
+          },
+          "uncertain": {
+            "precision": 0.8125,
+            "recall": 0.8666666666666667,
+            "f1": 0.8387096774193549,
+            "support": 15
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "true",
+            "false",
+            "uncertain"
+          ],
+          "matrix": [
+            [
+              20,
+              0,
+              0
+            ],
+            [
+              0,
+              17,
+              3
+            ],
+            [
+              2,
+              0,
+              13
+            ]
+          ]
+        }
+      },
+      "summary": {
+        "total": 55,
+        "accuracy": 0.9090909090909091,
+        "gold_dist": {
+          "true": 20,
+          "false": 20,
+          "uncertain": 15
+        },
+        "pred_dist": {
+          "true": 22,
+          "uncertain": 16,
+          "false": 17
+        }
+      },
+      "errors": [
+        {
+          "id": "B-01",
+          "subject": "Plakat mit anzüglichem Inhalt",
+          "description": "An der Haltestelle am Rheinufer hängt seit gestern ein Plakat mit sehr sexistischem Text. Viele Kinder laufen dort vorbei. Bitte entfernen oder prüfen lassen.",
+          "gold_label": "false",
+          "pred": {
+            "label": "uncertain",
+            "evidence": [
+              "An der Haltestelle am Rheinufer hängt seit gestern ein Plakat mit sehr sexistischem Text.",
+              "Viele Kinder laufen dort vorbei."
+            ],
+            "reasoning": "Das Plakat befindet sich an einer Haltestelle, aber es gibt keine expliziten Hinweise auf eine Radverkehrsrelevanz.",
+            "confidence": 0.6
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v002",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T15:31:40.687851+00:00",
+            "latency_ms": 1318,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "B-04",
+          "subject": "Rasenfläche völlig zertrampelt",
+          "description": "Die Grünfläche am Parkeingang ist komplett zerwühlt und voller Matsch. Sieht nach Wochenenden mit vielen Leuten aus. Wäre gut, wenn das wieder hergerichtet wird.",
+          "gold_label": "false",
+          "pred": {
+            "label": "uncertain",
+            "evidence": [],
+            "reasoning": "Der Text beschreibt eine beschädigte Grünfläche, ohne explizit auf Fahrräder oder Radverkehr Bezug zu nehmen.",
+            "confidence": 0.6
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v002",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T15:31:43.975602+00:00",
+            "latency_ms": 1009,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "B-05",
+          "subject": "Altglascontainer überfüllt",
+          "description": "Die Glascontainer an der Ecke Sonnenweg sind bis oben voll, daneben liegen Flaschen und Scherben. Bitte zeitnah leeren lassen. Das zieht auch Ratten an.",
+          "gold_label": "false",
+          "pred": {
+            "label": "uncertain",
+            "evidence": [
+              "Die Glascontainer an der Ecke Sonnenweg sind bis oben voll, daneben liegen Flaschen und Scherben."
+            ],
+            "reasoning": "Die Meldung beschreibt überfüllte Glascontainer und Scherben, was ein allgemeines Problem auf der Verkehrsfläche darstellt, aber ohne expliziten Bezug zum Radverkehr.",
+            "confidence": 0.7
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v002",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T15:31:45.246275+00:00",
+            "latency_ms": 1269,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "C-02",
+          "subject": "Markierung an Kreuzung weg",
+          "description": "An der Ecke Florastraße / Mühlenweg sind die weißen Linien fast nicht mehr zu sehen. Man weiß nicht, wo man lang soll.",
+          "gold_label": "uncertain",
+          "pred": {
+            "label": "true",
+            "evidence": [
+              "Markierung an Kreuzung weg",
+              "Ecke Florastraße / Mühlenweg sind die weißen Linien fast nicht mehr zu sehen"
+            ],
+            "reasoning": "Die Markierung an der Kreuzung ist nicht mehr sichtbar, was impliziert, dass es sich um eine Radverkehrsmarkierung handeln könnte, da weiße Linien an Kreuzungen oft Radfurten oder andere Radverkehrsführungen markieren.",
+            "confidence": 0.6
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v002",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T15:31:48.176523+00:00",
+            "latency_ms": 1607,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "C-08",
+          "subject": "Extrem glatt am Morgen",
+          "description": "Auf dem Stück am Uferweg ist es morgens spiegelglatt, wurde wohl nicht gestreut. Mehrere sind schon ausgerutscht.",
+          "gold_label": "uncertain",
+          "pred": {
+            "label": "true",
+            "evidence": [
+              "Uferweg"
+            ],
+            "reasoning": "Der Uferweg wird als Ort genannt, an dem es spiegelglatt ist, was impliziert, dass es sich um einen Weg handelt, der auch von Radfahrern genutzt wird.",
+            "confidence": 0.8
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v002",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T15:31:56.776665+00:00",
+            "latency_ms": 1226,
+            "attempts": 1
+          }
+        }
+      ]
+    },
+    "2.5": {
+      "run_dir": "/Volumes/T7/flag-the-event/runs/20260116_153311_v002_2.5-lite",
+      "metrics": {
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "true": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 20
+          },
+          "false": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 20
+          },
+          "uncertain": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 15
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "true",
+            "false",
+            "uncertain"
+          ],
+          "matrix": [
+            [
+              20,
+              0,
+              0
+            ],
+            [
+              0,
+              20,
+              0
+            ],
+            [
+              0,
+              0,
+              15
+            ]
+          ]
+        }
+      },
+      "summary": {
+        "total": 55,
+        "accuracy": 1.0,
+        "gold_dist": {
+          "true": 20,
+          "false": 20,
+          "uncertain": 15
+        },
+        "pred_dist": {
+          "true": 20,
+          "false": 20,
+          "uncertain": 15
+        }
+      },
+      "errors": []
+    }
+  },
+  "v003": {
+    "2.0": {
+      "run_dir": "/Volumes/T7/flag-the-event/runs/20260116_153414_v003_2.0-flash-001",
+      "metrics": {
+        "accuracy": 0.9636363636363636,
+        "macro_f1": 0.9616228070175438,
+        "per_class": {
+          "true": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 20
+          },
+          "false": {
+            "precision": 1.0,
+            "recall": 0.9,
+            "f1": 0.9473684210526315,
+            "support": 20
+          },
+          "uncertain": {
+            "precision": 0.8823529411764706,
+            "recall": 1.0,
+            "f1": 0.9375,
+            "support": 15
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "true",
+            "false",
+            "uncertain"
+          ],
+          "matrix": [
+            [
+              20,
+              0,
+              0
+            ],
+            [
+              0,
+              18,
+              2
+            ],
+            [
+              0,
+              0,
+              15
+            ]
+          ]
+        }
+      },
+      "summary": {
+        "total": 55,
+        "accuracy": 0.9636363636363636,
+        "gold_dist": {
+          "true": 20,
+          "false": 20,
+          "uncertain": 15
+        },
+        "pred_dist": {
+          "true": 20,
+          "false": 18,
+          "uncertain": 17
+        }
+      },
+      "errors": [
+        {
+          "id": "B-04",
+          "subject": "Rasenfläche völlig zertrampelt",
+          "description": "Die Grünfläche am Parkeingang ist komplett zerwühlt und voller Matsch. Sieht nach Wochenenden mit vielen Leuten aus. Wäre gut, wenn das wieder hergerichtet wird.",
+          "gold_label": "false",
+          "pred": {
+            "label": "uncertain",
+            "evidence": [],
+            "reasoning": "Der Text beschreibt eine beschädigte Grünfläche, ohne explizit auf Radverkehr oder zugehörige Infrastruktur einzugehen.",
+            "confidence": 0.8
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v003",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T15:34:26.043857+00:00",
+            "latency_ms": 1088,
+            "attempts": 1
+          }
+        },
+        {
+          "id": "B-05",
+          "subject": "Altglascontainer überfüllt",
+          "description": "Die Glascontainer an der Ecke Sonnenweg sind bis oben voll, daneben liegen Flaschen und Scherben. Bitte zeitnah leeren lassen. Das zieht auch Ratten an.",
+          "gold_label": "false",
+          "pred": {
+            "label": "uncertain",
+            "evidence": [
+              "Die Glascontainer an der Ecke Sonnenweg sind bis oben voll, daneben liegen Flaschen und Scherben."
+            ],
+            "reasoning": "Die Meldung beschreibt zwar Scherben, aber ohne expliziten Bezug zu Radverkehr oder Radinfrastruktur.",
+            "confidence": 0.6
+          },
+          "meta": {
+            "model_id": "gemini-2.0-flash-001",
+            "prompt_version": "v003",
+            "temperature": 0.0,
+            "max_output_tokens": 512,
+            "timestamp_utc": "2026-01-16T15:34:27.222642+00:00",
+            "latency_ms": 1177,
+            "attempts": 1
+          }
+        }
+      ]
+    },
+    "2.5": {
+      "run_dir": "/Volumes/T7/flag-the-event/runs/20260116_153542_v003_2.5-lite",
+      "metrics": {
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "per_class": {
+          "true": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 20
+          },
+          "false": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 20
+          },
+          "uncertain": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 15
+          }
+        },
+        "confusion_matrix": {
+          "labels": [
+            "true",
+            "false",
+            "uncertain"
+          ],
+          "matrix": [
+            [
+              20,
+              0,
+              0
+            ],
+            [
+              0,
+              20,
+              0
+            ],
+            [
+              0,
+              0,
+              15
+            ]
+          ]
+        }
+      },
+      "summary": {
+        "total": 55,
+        "accuracy": 1.0,
+        "gold_dist": {
+          "true": 20,
+          "false": 20,
+          "uncertain": 15
+        },
+        "pred_dist": {
+          "true": 20,
+          "false": 20,
+          "uncertain": 15
+        }
+      },
+      "errors": []
+    }
+  }
+}

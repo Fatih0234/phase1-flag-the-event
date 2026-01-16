@@ -8,7 +8,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from sklearn.metrics import confusion_matrix
 
-from bikeclf.config import RUNS_DIR, VALID_LABELS
+from bikeclf.config import RUNS_DIR, VALID_LABELS, MODEL_DISPLAY_NAMES
 
 
 @st.cache_data
@@ -229,10 +229,41 @@ def main():
         )
         return
 
+    # Sidebar filters
+    model_options = sorted({r["model_id"] for r in runs})
+    prompt_options = sorted({r["prompt_version"] for r in runs})
+
+    selected_models = st.sidebar.multiselect(
+        "Filter by Model:",
+        options=model_options,
+        default=model_options,
+        format_func=lambda m: MODEL_DISPLAY_NAMES.get(m, m),
+    )
+    selected_prompts = st.sidebar.multiselect(
+        "Filter by Prompt Version:",
+        options=prompt_options,
+        default=prompt_options,
+    )
+
+    filtered_runs = [
+        r
+        for r in runs
+        if r["model_id"] in selected_models
+        and r["prompt_version"] in selected_prompts
+    ]
+
+    if not filtered_runs:
+        st.warning("No runs match the current filters.")
+        return
+
     # Create run selector
     run_options = [
-        f"{r['name']} (Acc: {r['accuracy']:.3f}, F1: {r['macro_f1']:.3f})"
-        for r in runs
+        (
+            f"{r['name']} | {r['prompt_version']} | "
+            f"{MODEL_DISPLAY_NAMES.get(r['model_id'], r['model_id'])} "
+            f"(Acc: {r['accuracy']:.3f}, F1: {r['macro_f1']:.3f})"
+        )
+        for r in filtered_runs
     ]
 
     selected_idx = st.sidebar.selectbox(
@@ -241,7 +272,7 @@ def main():
         format_func=lambda i: run_options[i],
     )
 
-    selected_run = runs[selected_idx]
+    selected_run = filtered_runs[selected_idx]
 
     # Display run metadata
     st.sidebar.markdown("---")
