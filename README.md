@@ -344,9 +344,33 @@ Each line is a complete prediction record:
 
 ## Supported Models
 
-- `gemini-2.0-flash-001` (default, stable)
-- `gemini-2.0-flash` (latest)
-- `gemini-2.0-flash-exp` (experimental)
+All Gemini models from Google are supported. Simply add new model IDs to `bikeclf/config.py` in the `SUPPORTED_MODELS` list.
+
+**Currently supported:**
+
+### Gemini 2.0 Flash Family
+- `gemini-2.0-flash-001` - **Default**, stable version
+- `gemini-2.0-flash` - Latest version
+- `gemini-2.0-flash-exp` - Experimental version
+
+### Gemini 2.5 Flash Family
+- `gemini-2.5-flash-lite` - Lightweight, fast version ⚡
+- `gemini-2.5-flash` - Full featured version
+
+**Run naming convention:**
+Run directories include the model name for easy comparison:
+- `20260116_135146_v001_2.0-flash-001` - Gemini 2.0 Flash stable
+- `20260116_140325_v001_2.5-lite` - Gemini 2.5 Flash Lite
+
+**Compare models:**
+```bash
+# Test same prompt with different models
+python -m bikeclf.phase1.eval evaluate --prompt v001 --model gemini-2.0-flash-001
+python -m bikeclf.phase1.eval evaluate --prompt v001 --model gemini-2.5-flash-lite
+
+# Compare results in dashboard
+./run_dashboard.sh  # Select each run from dropdown
+```
 
 ## Langfuse Tracing
 

@@ -83,17 +83,21 @@ def init_langfuse() -> Optional[any]:
         return None
 
 
-def create_run_directory(prompt_version: str) -> Path:
-    """Create run directory with timestamp.
+def create_run_directory(prompt_version: str, model_id: str) -> Path:
+    """Create run directory with timestamp, prompt version, and model name.
 
     Args:
         prompt_version: Prompt version identifier (e.g., 'v001')
+        model_id: Model identifier (e.g., 'gemini-2.0-flash-001')
 
     Returns:
         Path to created run directory
     """
+    from bikeclf.config import get_model_short_name
+
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-    run_dir = RUNS_DIR / f"{timestamp}_{prompt_version}"
+    model_short = get_model_short_name(model_id)
+    run_dir = RUNS_DIR / f"{timestamp}_{prompt_version}_{model_short}"
     run_dir.mkdir(parents=True, exist_ok=True)
     return run_dir
 
@@ -162,8 +166,8 @@ def evaluate(
         console.print(f"[red]✗ Failed to load dataset: {e}[/red]")
         raise typer.Exit(1)
 
-    # Create run directory
-    run_dir = create_run_directory(prompt)
+    # Create run directory (includes model name)
+    run_dir = create_run_directory(prompt, model)
     console.print(f"[blue]Run directory: {run_dir}[/blue]\n")
 
     # Process each row
