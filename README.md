@@ -1,6 +1,11 @@
-# Bike Relevance Classification System
+# Bike Infrastructure Issue Classification System
 
-Phase 1 implementation of a systematic prompt-iteration workflow for classifying German civic issue reports as bike-related using Gemini 2.0 Flash.
+Two-phase LLM-powered classification system for German civic issue reports (Cologne "Sags-Uns"):
+
+**Phase 1:** Classify events as bike-related (TRUE/FALSE/UNCERTAIN)
+**Phase 2:** Categorize bike-related events into 9 maintenance/safety categories
+
+Powered by Google Gemini with structured output, prompt versioning, and full reproducibility.
 
 ## Features
 
@@ -115,11 +120,36 @@ The dashboard automatically discovers all runs and provides:
 
 Access at: http://localhost:8501
 
+## Phase Reports
+
+### Phase 1: Bike Relevance Classification
+See **`PHASE1_REPORT.md`** for complete details:
+- 2,045 events classified as bike-related (TRUE)
+- 29,439 events classified as not bike-related (FALSE)
+- 3,876 events uncertain or without description
+- Total cost: €2.33
+- Model: gemini-2.5-flash-lite
+
+### Phase 2: Issue Categorization
+See **`PHASE2_REPORT.md`** for complete details:
+- 2,025 bike-related events categorized into 9 categories
+- 95.4% accuracy on evaluation set (108 examples)
+- 100% success rate on production run
+- Total cost: €0.22
+- Model: gemini-2.5-flash-lite
+
+**Top Categories:**
+1. Oberflächenqualität / Schäden (43.5%) - Surface damage
+2. Hindernisse & Blockaden (17.2%) - Parking/barriers
+3. Müll / Scherben / Splitter (12.6%) - Glass/debris
+
 ## Project Structure
 
 ```
 .
 ├── README.md
+├── PHASE1_REPORT.md            # Phase 1 complete results
+├── PHASE2_REPORT.md            # Phase 2 complete results
 ├── pyproject.toml              # Dependencies and project metadata
 ├── .env.example                # Environment variable template
 ├── .gitignore
@@ -127,24 +157,46 @@ Access at: http://localhost:8501
 ├── prompts/                    # Prompt versions
 │   └── phase1/
 │       ├── README.md           # Prompt versioning guide
-│       └── v001.md             # Initial prompt (German)
-├── runs/                       # Generated artifacts (gitignored)
+│       └── v001-v006.md        # Phase 1 prompts
+├── phase2/                     # Phase 2 specific files
+│   ├── PHASE2_PLAN.md          # Planning document
+│   ├── README.md               # Quick reference
+│   ├── phase2-eval-set.jsonl   # Gold standard (108 examples)
+│   ├── prompts/
+│   │   └── v001.md             # Phase 2 prompt
+│   └── runs/                   # Phase 2 evaluation/production runs
+│       ├── {timestamp}_v001_2.5-lite/       # Eval run
+│       └── supabase_pipeline_{timestamp}/   # Production run
+├── runs/                       # Phase 1 runs (gitignored)
 │   └── <timestamp>_<version>/
 │       ├── predictions.jsonl   # Full predictions with metadata
 │       ├── metrics.json        # Accuracy, F1, confusion matrix
 │       ├── config.json         # Run configuration
 │       └── errors.jsonl        # Failed predictions (if any)
+├── scripts/
+│   ├── run_supabase_pipeline.py           # Phase 1 production
+│   └── run_supabase_phase2_pipeline.py    # Phase 2 production
 ├── bikeclf/                    # Main package
 │   ├── __init__.py
 │   ├── config.py               # Environment and configuration
-│   ├── schema.py               # Pydantic models
+│   ├── schema.py               # Pydantic models (Phase 1 + Phase 2)
 │   ├── io.py                   # File I/O utilities
-│   ├── gemini_client.py        # Gemini API wrapper
+│   ├── gemini_client.py        # Gemini API wrapper (Phase 1)
 │   ├── metrics.py              # Metrics computation
-│   └── phase1/
+│   ├── phase1/
+│   │   ├── __init__.py
+│   │   ├── prompt_loader.py    # Prompt versioning
+│   │   ├── eval.py             # CLI entry point
+│   │   └── dashboard.py        # Streamlit dashboard
+│   └── phase2/                 # Phase 2 module
 │       ├── __init__.py
-│       ├── prompt_loader.py    # Prompt versioning
-│       └── eval.py             # CLI entry point
+│       ├── config.py            # Phase 2 paths and categories
+│       ├── eval.py              # Phase 2 CLI
+│       ├── gemini_client.py     # Phase 2 client (9-way)
+│       ├── io.py                # JSONL I/O
+│       ├── metrics.py           # 9-way metrics
+│       ├── markdown_report.py   # Category reports
+│       └── prompt_loader.py     # Phase 2 prompt loader
 └── tests/
     ├── test_schema.py          # Pydantic schema tests
     └── test_metrics.py         # Metrics computation tests
